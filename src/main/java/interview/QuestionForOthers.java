@@ -8,6 +8,38 @@ import java.util.*;
 public class QuestionForOthers {
     public QuestionForOthers(){}
 
+    /**
+     * You’re given a board game which is a row of squares, each labeled with an integer.
+     * This can be represented by a list, e.g. [1, 3, 2, 0, 5, 2, 8, 4, 1] Given a start
+     * position on the board, you “win” by landing on a zero, where you move by jumping
+     * from square to square either left or right the number of spaces specified on the
+     * square you’re currently on.
+     * Your task is to implement the function: canWin(int[] board, pos):
+     * returns True if you can win the board from that starting pos, False otherwise
+     * @param board
+     * @param pos
+     * @return
+     */
+    public boolean canWin(int[] board, int pos) {
+        if (board == null || pos >= board.length || pos < 0) return false;
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(pos);
+        Set<Integer> visited = new HashSet<>();
+        while (!queue.isEmpty()) {
+            int index = queue.poll();
+            if (board[index] == 0) return true;
+            visited.add(pos);
+            int left = index - board[index];
+            int right = index + board[index];
+            if (left >= 0 && !visited.contains(left)) {
+                queue.add(left);
+            }
+            if (right < board.length && !visited.contains(right)) {
+                queue.add(right);
+            }
+        }
+        return false;
+    }
     public boolean wordPattern(String pattern, String str) {
         String[] arr = str.split(" ");
         if (pattern.length() != arr.length) return false;

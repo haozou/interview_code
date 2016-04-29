@@ -1,6 +1,9 @@
 package interview;
 
+import com.sun.tools.javac.util.*;
+
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Hao on 2/19/16.
@@ -17,13 +20,13 @@ public class QuestionForStringAndArray {
      * @return
      */
     public boolean isUnique(String str) {
-        Map<Character, Boolean> set = new HashMap<>();
+        Set<Character> set = new HashSet<>();
         for (int i = 0; i < str.length(); i++) {
             Character c = str.charAt(i);
-            if (set.containsKey(c)) {
+            if (set.contains(c)) {
                 return false;
             } else {
-                set.put(str.charAt(i), true);
+                set.add(str.charAt(i));
             }
         }
         return true;
@@ -218,10 +221,241 @@ public class QuestionForStringAndArray {
      *strings,s1 and s2, write code to check if s2 is a rotation of s1 using
      *only one call to isSubstring (i e , “waterbottle” is a rotation of “erbottlewat”)
      */
-    public static boolean isRotation(String s1, String s2) {
+    public boolean isRotation(String s1, String s2) {
         if (s1 == null || s2 == null) return false;
         if (s1.length() != s2.length()) return false;
         String concatenated = s2 + s2;
         return concatenated.contains(s1);
+    }
+
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length == 0) return result;
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i > 0 && nums[i - 1] == nums[i]) continue;
+            int start = i + 1;
+            int end = nums.length - 1;
+            while (start < end) {
+                if (start - 1 > i && nums[start] == nums[start - 1]) {
+                    start++;
+                    continue;
+                }
+                if (end + 1 < nums.length && nums[end] == nums[end + 1]) {
+                    end--;
+                    continue;
+                }
+                int sum = nums[i] + nums[start] + nums[end];
+                if (sum < 0) {
+                    start++;
+                } else if (sum > 0) {
+                    end--;
+                } else {
+                    List<Integer> level = new ArrayList<>();
+                    level.add(nums[i]);
+                    level.add(nums[start]);
+                    level.add(nums[end]);
+                    result.add(level);
+                    start++;
+                    end--;
+                }
+            }
+        }
+        return result;
+    }
+
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        Arrays.sort(nums);
+        return nSum(nums, 0, 4, target);
+    }
+
+    public List<List<Integer>> nSum(int[] nums, int idx, int n, int target) {
+        if (n == 2) return twoSum(nums, idx, target);
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = idx; i < nums.length - n + 1;i++) {
+            // if (i - 1 >= idx && nums[i - 1] == nums[i]) {
+            //     i++;
+            //     continue;
+            // }
+            List<List<Integer>> temp = nSum(nums, i + 1, n - 1, target);
+            for (List<Integer> t: temp) {
+                t.add(0, nums[i]);
+            }
+            result.addAll(temp);
+            int t = nums[i];
+            while (i <= nums.length - n && nums[i] == t) {
+                i++;
+            }
+            i--;
+        }
+        return result;
+    }
+
+    public List<List<Integer>> twoSum(int[] nums, int idx, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (nums == null || nums.length <= idx) return result;
+        for (int i = idx, j = nums.length - 1; i < j; ) {
+            if (i - 1 >= idx && nums[i] == nums[i - 1]) {
+                i++;
+                continue;
+            }
+            if (j + 1 < nums.length && nums[j] == nums[j + 1]) {
+                j--;
+                continue;
+            }
+            if (nums[i] + nums[j] < target) {
+                i++;
+            } else if (nums[i] + nums[j] > target) {
+                j--;
+            } else {
+                List<Integer> level = new ArrayList<Integer>();
+                level.add(nums[i]);
+                level.add(nums[j]);
+                result.add(level);
+                i++;
+                j--;
+            }
+        }
+        return result;
+    }
+
+    public int[] radixSort(int[] nums) {
+        if (nums == null) return nums;
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > max) {
+                max = nums[i];
+            }
+        }
+        for (int i = 1; max / i > 0; i = i * 10) {
+            countSort(nums, i);
+        }
+        return nums;
+    }
+
+    public void countSort(int[] nums, int exp) {
+        int[] result = new int[nums.length];
+        int[] counts = new int[10];
+        for (int i = 0; i < nums.length; i++) {
+            counts[(nums[i]/exp) % 10]++;
+        }
+        for (int i = 1; i < 10; i++) {
+            counts[i] += counts[i - 1];
+        }
+        for (int i = nums.length - 1; i >= 0; i--) {
+            result[counts[(nums[i]/exp) % 10] - 1] = nums[i];
+            counts[(nums[i]/exp) % 10]--;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = result[i];
+        }
+    }
+
+    public String countAndSay(int n) {
+        if (n < 1) return "";
+        StringBuilder builder = new StringBuilder();
+        builder.append("1");
+        for (int i = 2; i < n; i++) {
+            String cur = builder.toString();
+            builder.setLength(0);
+            int count = 1;
+            for (int j = 0; j < cur.length(); j++) {
+                if (j + 1 < cur.length() && cur.charAt(j) == cur.charAt(j+1)) {
+                    count++;
+                } else {
+                    builder.append(count).append(cur.charAt(j));
+                    count = 1;
+                }
+            }
+        }
+        return builder.toString();
+    }
+
+    public int footballProblem(int[] nums, int target, int index) {
+        if (index < 0) return 0;
+        if (target == 0) return 1;
+        if (target < 0) return 0;
+        return footballProblem(nums, target - nums[index], index)
+                + footballProblem(nums, target, index - 1);
+
+    }
+
+    private boolean matches(int[] sourceDict, int[] targetDict, int lens) {
+        int matches = 0;
+        for (int i = 0; i < 256; i++) {
+            if (sourceDict[i] > 0 && targetDict[i] > 0) {
+                matches++;
+            }
+        }
+        return matches == lens;
+    }
+    public String minLenSubStringWithAllChars(String source, String target) {
+        int[] sourceDict = new int[256];
+        int[] targetDict = new int[256];
+        int minLen = Integer.MAX_VALUE;
+        int bestStart = -1, bestEnd = -1;
+        for (int i = 0; i < target.length(); i++) {
+            sourceDict[source.charAt(i)]++;
+            targetDict[target.charAt(i)]++;
+        }
+        for (int start = 0, end = target.length();
+             start < source.length(); ) {
+            if (!matches(sourceDict, targetDict, target.length()) && end < source.length()) {
+                sourceDict[source.charAt(end)]++;
+                end++;
+            } else if (matches(sourceDict, targetDict, target.length())){
+                if (end - start < minLen) {
+                    minLen = end - start;
+                    bestStart = start;
+                    bestEnd = end;
+                }
+                sourceDict[source.charAt(start)]--;
+                start++;
+            } else {
+                break;
+            }
+        }
+        if (bestStart == -1) {
+            return null;
+        }
+        return source.substring(bestStart, bestEnd);
+    }
+
+    public void printAllsubsets(String str) {
+        printAllsubsets(str, 0, "");
+    }
+
+    public void printAllsubsets(String str, int i, String subset) {
+        if (i == str.length()) {
+            System.out.println(subset);
+        } else {
+            printAllsubsets(str, i + 1, subset);
+            subset += str.charAt(i);
+            printAllsubsets(str, i + 1, subset);
+        }
+    }
+
+
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        generate(candidates, res, new ArrayList<Integer>(), target, 0);
+        return res;
+    }
+
+    private void generate(int[] candidates, List<List<Integer>> res, ArrayList<Integer> cur, int target, int start) {
+        if (target < 0) return;
+        if (target == 0) {
+            res.add(new ArrayList<Integer>(cur));
+            return;
+        }
+        for (int i = start; i < candidates.length; i++) {
+            if (i > start && candidates[i] == candidates[i - 1]) {
+                continue;
+            }
+            cur.add(candidates[i]);
+            generate(candidates, res, cur, target - candidates[i], i);
+            cur.remove(cur.size() - 1);
+        }
     }
 }
