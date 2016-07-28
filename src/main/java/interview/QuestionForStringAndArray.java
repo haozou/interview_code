@@ -435,27 +435,61 @@ public class QuestionForStringAndArray {
         }
     }
 
-
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        generate(candidates, res, new ArrayList<Integer>(), target, 0);
-        return res;
+    public void printAllproducts(int[] nums) {
+        printAllproducts(nums, 0, 1);
     }
 
-    private void generate(int[] candidates, List<List<Integer>> res, ArrayList<Integer> cur, int target, int start) {
+    public void printAllproducts(int[] nums, int i, int product) {
+        if (i == nums.length) {
+            System.out.println(product);
+        } else {
+            printAllproducts(nums, i + 1, product);
+            product *= nums[i];
+            printAllproducts(nums, i + 1, product);
+        }
+    }
+
+
+    public void combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        generate(candidates, target, 0, "");
+    }
+
+    private void generate(int[] candidates, int target, int start, String one) {
         if (target < 0) return;
         if (target == 0) {
-            res.add(new ArrayList<Integer>(cur));
+            System.out.println(one);
             return;
         }
         for (int i = start; i < candidates.length; i++) {
             if (i > start && candidates[i] == candidates[i - 1]) {
                 continue;
             }
-            cur.add(candidates[i]);
-            generate(candidates, res, cur, target - candidates[i], i);
-            cur.remove(cur.size() - 1);
+            one += Integer.toString(candidates[i]) + " ";
+            generate(candidates, target - candidates[i], i, one);
+            one = one.substring(0, one.length() - Integer.toString(candidates[i]).length() - 1);
         }
     }
+
+    public void combine(int n, int k) {
+        combine(n, k, 1, "");
+    }
+
+    private void combine(int n, int k, int start, String path) {
+        if (k == 0) {
+            System.out.println(path);
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            String newPath = path + Integer.toString(i) + " ";
+            combine(n, k - 1, i + 1, newPath);
+            //path = path.substring(0, path.length() - Integer.toString(i).length() - 1);
+        }
+    }
+
+    public String generateRandomString() {
+
+    }
 }
+
+

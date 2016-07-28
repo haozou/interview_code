@@ -1,14 +1,15 @@
 package interview;
 
 import javax.swing.tree.TreeNode;
-import java.util.Arrays;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created by Hao on 2/19/16.
  */
 public class Solution {
     public static void main(String[] args) {
+        System.out.println(getTableMemUsage());
         QuestionForStringAndArray question = new QuestionForStringAndArray();
         QuestionForLinkedList q2 = new QuestionForLinkedList();
         QuestionForOthers q3 = new QuestionForOthers();
@@ -75,8 +76,9 @@ public class Solution {
         System.out.println(question.minLenSubStringWithAllChars("adobecodebanc", "abc"));
         question.printAllsubsets("abc");
         System.out.println(question.footballProblem(new int[]{10, 1, 2, 7, 6, 5}, 8, 5));
-
-
+        question.printAllproducts(new int[]{2, 11, 3});
+        question.combinationSum2(new int[]{1, 2, 3, 4, 5}, 5);
+        question.combine(4, 2);
 
     }
 
@@ -118,5 +120,21 @@ public class Solution {
             node = node.next;
         }
         return root;
+    }
+
+    public static float getTableMemUsage() {
+        System.gc();
+        float heapSize = Runtime.getRuntime().totalMemory();
+        System.out.println((Runtime.getRuntime().freeMemory()) / 1024.0 / 1024.0);
+        List<String[]>  result = new ArrayList<>();
+        int i = 0;
+        while (i < 100000) {
+            result.add(new String[]{"a", "b", "c", "d"});
+            i++;
+        }
+
+
+        heapSize = Runtime.getRuntime().totalMemory();
+        return (Runtime.getRuntime().freeMemory()) / 1024 / 1024;
     }
 }
