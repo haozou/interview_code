@@ -1,4 +1,4 @@
-package interview;
+package com.hao.interview;
 
 /**
  * Created by Hao on 3/3/16.

@@ -1,6 +1,6 @@
-package interview;
+package com.hao.interview;
 
-import com.sun.tools.javac.util.*;
+//import com.sun.tools.javac.util.*;
 
 import java.util.*;
 import java.util.List;
@@ -485,10 +485,6 @@ public class QuestionForStringAndArray {
             combine(n, k - 1, i + 1, newPath);
             //path = path.substring(0, path.length() - Integer.toString(i).length() - 1);
         }
-    }
-
-    public String generateRandomString() {
-
     }
 }
 

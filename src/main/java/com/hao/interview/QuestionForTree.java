@@ -1,4 +1,4 @@
-package interview;
+package com.hao.interview;
 
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 

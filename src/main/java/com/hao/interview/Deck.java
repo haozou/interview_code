@@ -1,4 +1,4 @@
-package interview;
+package com.hao.interview;
 
 import java.util.*;
 

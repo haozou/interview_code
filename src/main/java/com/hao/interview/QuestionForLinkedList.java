@@ -1,4 +1,4 @@
-package interview;
+package com.hao.interview;
 
 import sun.awt.image.ImageWatched;
 

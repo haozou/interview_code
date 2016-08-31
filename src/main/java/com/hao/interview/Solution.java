@@ -1,7 +1,5 @@
-package interview;
+package com.hao.interview;
 
-import javax.swing.tree.TreeNode;
-import java.io.*;
 import java.util.*;
 
 /**
