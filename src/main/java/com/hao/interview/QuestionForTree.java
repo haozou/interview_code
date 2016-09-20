@@ -111,7 +111,7 @@ public class QuestionForTree {
         inOrderRecursive(node.right);
     }
 
-    public void convertBSTToDLL(TreeNode node) {
+    /*public void convertBSTToDLL(TreeNode node) {
         Helper helper = new Helper();
         convertBSTToDLLHelper(node, helper);
         TreeNode cur = helper.head;
@@ -127,7 +127,7 @@ public class QuestionForTree {
         }
         System.out.println();
 
-    }
+    }*/
 
     public void convertBSTToDLLHelper(TreeNode node, Helper helper) {
         if (node == null) return;
@@ -413,5 +413,69 @@ public class QuestionForTree {
             }
         }
         System.out.println();
+    }
+
+    public void printAllPathFromRoot(TreeNode node) {
+        printAllPathFromRoot(node, "");
+    }
+
+    private void printAllPathFromRoot(TreeNode node, String path) {
+        if (node == null) return;
+        String newPath = path + node.val + " ";
+        System.out.println(newPath);
+        printAllPathFromRoot(node.left, newPath);
+        printAllPathFromRoot(node.right, newPath);
+    }
+    static class Result {
+        int val = 0;
+    }
+    public int getMostWeightedPath(TreeNode node) {
+        Result re = new Result();
+        getMostWeightedPath(node, 0, re);
+        return re.val;
+    }
+
+    private void getMostWeightedPath(TreeNode node, int curSum, Result re) {
+        if (node == null) return;
+        curSum += node.val;
+        if (curSum > re.val) {
+            re.val = curSum;
+        }
+        getMostWeightedPath(node.left, curSum, re);
+        getMostWeightedPath(node.right, curSum, re);
+    }
+
+    public TreeNode convertBSTToDLL(TreeNode node) {
+        Helper helper = new Helper();
+        convertBSTToDLL(node, helper);
+        TreeNode cur = helper.head;
+        while (cur != null) {
+            System.out.print(cur.val + " ");
+            cur = cur.right;
+        }
+        System.out.println();
+        cur = helper.tail;
+        while (cur != null) {
+            System.out.print(cur.val + " ");
+            cur = cur.left;
+        }
+        System.out.println();
+        return helper.head;
+    }
+
+    private void convertBSTToDLL(TreeNode node, Helper helper) {
+        if (node == null) return;
+        convertBSTToDLL(node.left, helper);
+        if (helper.prev == null) {
+            helper.head = node;
+        } else {
+            helper.prev.right = node;
+            node.left = helper.prev;
+        }
+        helper.prev = node;
+        convertBSTToDLL(node.right, helper);
+        if (node.right == null) {
+            helper.tail = node;
+        }
     }
 }
