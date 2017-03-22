@@ -9,18 +9,18 @@ import static org.testng.Assert.*;
  */
 public class TrieTest {
 
-    @Test
-    public void testSearch() {
-        Trie trie = new Trie();
-        trie.addWord("gopro");
-        trie.addWord("function");
-        trie.addWord("computer");
-        trie.addWord("computing");
-
-        assertTrue(trie.search("gopro"));
-        assertFalse(trie.search("gopr"));
-        assertTrue(trie.search("computer"));
-        assertTrue(trie.search("computing"));
-        assertTrue(trie.searchPattern("com...er"));
-    }
+//    @Test
+//    public void testSearch() {
+//        Trie trie = new Trie();
+//        trie.addWord("gopro");
+//        trie.addWord("function");
+//        trie.addWord("computer");
+//        trie.addWord("computing");
+//
+//        assertTrue(trie.search("gopro"));
+//        assertFalse(trie.search("gopr"));
+//        assertTrue(trie.search("computer"));
+//        assertTrue(trie.search("computing"));
+//        assertTrue(trie.searchPattern("com...er"));
+//    }
 }

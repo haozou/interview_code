@@ -7,10 +7,10 @@ public class TicTacToe {
     private int row;
     private int col;
 
-    private int[] rows;
-    private int[] cols;
-    private int backDiagnose;
-    private int diagnose;
+    private int[][] rows;
+    private int[][] cols;
+    private int[] backDiagnose;
+    private int[] diagnose;
     private int[][] matrix;
     public TicTacToe() {
 
@@ -20,13 +20,13 @@ public class TicTacToe {
         this.row = row;
         this.col = col;
         matrix = new int[row][col];
-        rows = new int[row];
-        cols = new int[col];
-        backDiagnose = 0;
-        diagnose = 0;
+        rows = new int[2][row];
+        cols = new int[2][col];
+        backDiagnose = new int[]{0,0};
+        diagnose = new int[]{0,0};
     }
 
-    public int move(int n, int m, int player) throws Exception {
+    /*public int move(int n, int m, int player) throws Exception {
 
         if (n < 0 || n >= row || m < 0 || m >= col) {
             throw new Exception(String.format("move not valid: (%d, %d)", n, m));
@@ -109,6 +109,83 @@ public class TicTacToe {
         }
         return 0;
 
+    } */
+
+    public int move (int n, int m, int player) throws Exception {
+        if (n < 0 || n >= row || m < 0 || m >= col) {
+            throw new Exception("");
+        }
+        if (matrix[n][m] != 0) {
+            throw new Exception("");
+        }
+        matrix[n][m] = player;
+        boolean win = true;
+        for (int i = 0; i < row; i++) {
+            if (matrix[n][i] != player) {
+                win = false;
+                break;
+            }
+        }
+        if (win) return player;
+
+        win = true;
+        for (int i = 0; i < col; i++) {
+            if (matrix[i][m] != player) {
+                win = false;
+                break;
+            }
+        }
+        if (win) return player;
+
+        if (m == n) {
+            win = true;
+            for (int i = 0; i < row; i++) {
+                if (matrix[i][i] != player) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return player;
+        }
+
+        if ( m + n + 1 == row) {
+            for (int i = 0; i < row; i++) {
+                if (matrix[i][row - i - 1] != player) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) return player;
+        }
+        return 0;
+    }
+
+    public int move2 (int n, int m, int player) throws Exception {
+        if (n < 0 || n >= row || m < 0 || m >= col) {
+            throw new Exception("");
+        }
+        if (matrix[n][m] != 0) {
+            throw new Exception("");
+        }
+        matrix[n][m] = player;
+
+        rows[player - 1][n]++;
+        cols[player - 1][m]++;
+
+        if (n == m) {
+            backDiagnose[player - 1]++;
+        }
+
+        if (n + m + 1 == row) {
+            diagnose[player - 1]++;
+        }
+        if (rows[player - 1][n] == row
+                || cols[player - 1][m] == col
+                || diagnose[player - 1] == row
+                || backDiagnose[player - 1] == row) {
+            return player;
+        }
+        return 0;
     }
 
 }

@@ -33,6 +33,7 @@ public class QuestionForLinkedList {
         return head;
     }
 
+
     public LinkedNode findMiddle(LinkedNode node) {
         if (node == null) return node;
         LinkedNode chaser = node;

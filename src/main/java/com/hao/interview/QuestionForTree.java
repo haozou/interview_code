@@ -468,7 +468,8 @@ public class QuestionForTree {
         convertBSTToDLL(node.left, helper);
         if (helper.prev == null) {
             helper.head = node;
-        } else {
+        }
+        else {
             helper.prev.right = node;
             node.left = helper.prev;
         }

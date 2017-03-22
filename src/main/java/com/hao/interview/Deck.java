@@ -48,11 +48,11 @@ public class Deck implements Iterable<Card>{
 
     public void shuffle() {
         Random rand = new Random();
-        for (int i = size - 1; i >= 0; i--) {
-            int index = rand.nextInt(i + 1);
-            Card tmp = this.cards.get(i);
-            this.cards.set(i, this.cards.get(index));
-            this.cards.set(index, tmp);
+        for (int i = size - 1; i > 0; i--) {
+            int index = rand.nextInt(i);
+            Card tmp = cards.get(index);
+            cards.set(index, cards.get(i));
+            cards.set(i, tmp);
         }
     }
 }

@@ -126,4 +126,38 @@ public class LeetCodeTest {
     public void testFactor() {
         System.out.println(leetCode.factorCombinations(8));
     }
+
+    @Test
+    public void testIsWordPattern() {
+        System.out.println(leetCode.isWordPattern("abcc", "ab de fg fg"));
+    }
+
+    @Test
+    public void testCreateTree() {
+        /**
+         *  5
+         / \
+         4   8
+         /   / \
+         11  13  4
+         /  \    / \
+         7    2  5   1
+         */
+        LeetCode.TreeNode node = leetCode.createTree(new String[]{"5","4","8","11",null,"13","4","7","2",null,null,"5","1"});
+        System.out.println(leetCode.levelOrder(node));
+
+    }
+
+    @Test
+    public void testPathSum() {
+        LeetCode.TreeNode root = leetCode.createTree(new String[]{"5","4","8","11",null,"13","4","7","2",null,null,"5","1"});
+        System.out.println(leetCode.pathSum(root, 22));
+    }
+
+    @Test
+    public void testPrintAllPath() {
+        LeetCode.TreeNode node = leetCode.createTree(new String[]{"5","4","8","11",null,"13","4","7","2",null,null,"5","1"});
+
+        leetCode.printAllPaths(node);
+    }
 }

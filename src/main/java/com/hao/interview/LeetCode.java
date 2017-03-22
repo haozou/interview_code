@@ -208,14 +208,14 @@ public class LeetCode {
         String[] patternString = new String[128];
         HashSet<String> wordAddrs = new HashSet<>();
         for (int i = 0; i < patterns.length; i++) {
-            if (patternString[i].equals("")) {
+            if (patternString[patterns[i]] == null) {
                 if (wordAddrs.contains(wordsArray[i])) {
                     return false;
                 }
-                patternString[i] = wordsArray[i];
+                patternString[patterns[i]] = wordsArray[i];
                 wordAddrs.add(wordsArray[i]);
             } else {
-                if (!wordsArray[i].equals(patternString[i])) {
+                if (!wordsArray[i].equals(patternString[patterns[i]])) {
                     return false;
                 }
             }
@@ -229,7 +229,7 @@ public class LeetCode {
             if (map.containsKey(target - nums[i])) {
                 return new int[]{map.get(target - nums[i]), i};
             } else {
-                map.put(target - nums[i], i);
+                map.put(nums[i], i);
             }
         }
         return null;
@@ -653,7 +653,7 @@ public class LeetCode {
         return (int)j;
     }
 
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -925,5 +925,63 @@ public class LeetCode {
             }
         }
         return max;
+    }
+
+    public TreeNode createTree(String[] array) {
+        int[] numOfNull = new int[array.length];
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] == null)  count++;
+            numOfNull[i] = count;
+        }
+        return createTree(array, 0, numOfNull);
+    }
+    //[5,4,8,11,null,13,4,7,2,null,null,5,1]
+    public TreeNode createTree(String[] array, int i, int[] numOfNull) {
+        if (i >= array.length) return null;
+        String val = array[i];
+        if (val == null) {
+            return null;
+        }
+        TreeNode node = new TreeNode(Integer.parseInt(val));
+        node.left = createTree(array, i + 1 + i - numOfNull[i] * 2 , numOfNull);
+        node.right = createTree(array, i + 2 + i - numOfNull[i] * 2, numOfNull);
+        return node;
+    }
+
+    public void printAllPaths(TreeNode node) {
+        printAllPaths(node, "");
+    }
+    public void printAllPaths(TreeNode node, String path) {
+        if(node == null) return;
+        String newPath = path + node.val + " ";
+        if (node.left == null && node.right == null) {
+            System.out.println(newPath);
+            return;
+        }
+        printAllPaths(node.left, newPath);
+        printAllPaths(node.right, newPath);
+
+    }
+
+    public List<List<Integer>> pathSum(TreeNode node, int sum) {
+        List<List<Integer>> result = new ArrayList<>();
+        pathSum(node, sum, new ArrayList<Integer>(), result);
+        return result;
+    }
+
+    public void pathSum(TreeNode node, int sum, List<Integer> oneResult, List<List<Integer>> result) {
+        if (node == null) return;
+        sum -= node.val;
+        oneResult.add(node.val);
+        if (sum == 0 && node.left == null && node.right == null) {
+            result.add(new ArrayList<Integer>(oneResult));
+            oneResult.remove(oneResult.size() - 1);
+            return;
+        }
+
+        pathSum(node.left, sum, oneResult, result);
+        pathSum(node.right, sum, oneResult, result);
+        oneResult.remove(oneResult.size() - 1);
     }
 }
