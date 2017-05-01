@@ -34,6 +34,8 @@ public class MusicPlayerDriver {
                     case 3: {
                         while (true) {
                             try {
+                                musicPlayer.listAllMP3MusicByTitle();
+                                System.out.println("--------------------------");
                                 System.out.println("input your music number:");
                                 int musicNumber = scanner.nextInt();
                                 musicPlayer.play(musicNumber);

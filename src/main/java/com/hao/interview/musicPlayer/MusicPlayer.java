@@ -23,7 +23,7 @@ public class MusicPlayer implements MusicPlayerInterface {
     private String path;
     private List<Music> musics = new ArrayList<>();
     private List<Music> musicsSortByArtist = new ArrayList<>();
-    private int playMusicId = -1;
+    private final List<Music> playingMusics = new ArrayList<>();
 
     public MusicPlayer() {
     }
@@ -112,8 +112,14 @@ public class MusicPlayer implements MusicPlayerInterface {
     @Override
     public void play(final int musicNumber) throws NoMusicException {
         if (musicNumber > musics.size() || musicNumber < 1) throw new NoMusicException("No Such Music Exception");
-        final Music music = musics.get(musicNumber - 1);
-        this.playMusicId = musicNumber;
+        Music music = musics.get(musicNumber - 1);
+        if (playingMusics.contains(music)) return;
+        playingMusics.add(music);
+        play(music);
+
+    }
+
+    public void play(final Music music) throws NoMusicException {
         music.setPlayer();
         //create a new thread to start playback
         //the run method will not be called until the thread is started
@@ -124,7 +130,7 @@ public class MusicPlayer implements MusicPlayerInterface {
                 try {
                     music.getPlayer().play();
                     if (music.getPlayer().isComplete()) {
-                        playMusicId = -1;
+                        playingMusics.remove(music);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,12 +142,13 @@ public class MusicPlayer implements MusicPlayerInterface {
         t.start();
     }
 
+
     @Override
     public void stopPlayBack() {
-        if (playMusicId != -1) {
-            musics.get(playMusicId - 1).getPlayer().close();
+        for (Music music: playingMusics) {
+            music.getPlayer().close();
             try {
-                play(playMusicId);
+                play(music);
             } catch (NoMusicException e) {
                 e.printStackTrace();
             }
