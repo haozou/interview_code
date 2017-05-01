@@ -6,10 +6,10 @@ package com.hao.interview;
 public class Card {
 
     public enum Suit {
-        CLUBS,
         SPADES,
         HEARTS,
         DIAMONDS,
+        CLUBS,
         SMALLBOSS,
         BIGBOSS
     }
@@ -60,6 +60,7 @@ public class Card {
 
     @Override
     public String toString() {
+        String suitString = "";
         return "Card{" +
                 "value=" + value +
                 ", suit=" + suit +

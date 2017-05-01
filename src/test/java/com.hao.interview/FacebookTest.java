@@ -5,8 +5,11 @@ import org.testng.annotations.Test;
 import org.testng.Assert.*;
 import com.hao.interview.QuestionForTree.TreeNode;
 import com.hao.interview.QuestionForLinkedList.LinkedNode;
+import sun.jvm.hotspot.utilities.Interval;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by hzou on 3/15/17.
@@ -32,9 +35,31 @@ public class FacebookTest {
 
     @Test
     public void testCreateMinimalHeightDDL() {
-        TreeNode root = facebook.createMinimalHeightBST(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+        TreeNode root = facebook.createMinimalHeightBST(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
         inOrderBST(root);
         System.out.println();
+        facebook.printColumnOrder(root);
+        root.left.left.left = new TreeNode(2);
+        root.left.right.left = new TreeNode(1);
+        root.left.right.right = new TreeNode(0);
+        root.right.right.left = new TreeNode(8);
+        root.right.right.right = new TreeNode(8);
+        facebook.connect2(root);
+        printTree(root);
+
+    }
+    public void printTree(TreeNode root) {
+        if (root == null) return;
+        TreeNode node = root;
+        while (node != null) {
+            System.out.print(node.val + " ");
+            node = node.next;
+        }
+        System.out.println();
+        if (root.left != null)
+            printTree(root.left);
+        else
+            printTree(root.right);
     }
 
     @Test
@@ -128,5 +153,66 @@ public class FacebookTest {
             System.out.println();
         }
 
+    }
+
+    @Test
+    public void testWordBreak2() {
+        String s = "catsanddog";
+        String[] dict = new String[]{"cat", "cats", "and", "sand", "dog"};
+        System.out.println(facebook.wordBreak2(s, Arrays.asList(dict)));
+    }
+
+    @Test
+    public void testMinCoins() {
+        System.out.println(facebook.minCoins(new int[]{1,3,5}, 11));
+        System.out.println(facebook.minCoinsNP(new int[]{1,3,5}, 11));
+    }
+
+    @Test
+    public void testLongestNonDescendingNums() {
+        System.out.println(facebook.longestNonDescendingNums(new int[]{5,1,2,3,2,4,6,8,10,3,5}));
+    }
+
+    @Test
+    public void testGetMaxNumber() {
+        System.out.println(facebook.getMaxNumber(new int[][]{
+                {1,2,2,3},
+                {3,4,3,3},
+                {1,2,3,3}
+        }));
+        System.out.println(facebook.getMaxNumberDP(new int[][]{
+                {1,2,2,3},
+                {3,4,3,3},
+                {1,2,3,3}
+        }));
+    }
+
+    @Test
+    public void testGetCompleteTime() {
+        String[] tasks = new String[]{"A", "B", "B", "C", "A", "A"};
+        System.out.println(facebook.getCompleteTime(tasks, 3));
+    }
+
+    @Test
+    public void testLexicalOrder() {
+        System.out.println(facebook.lexicalOrder(13));
+        System.out.println(facebook.lexicalOrder2(13));
+    }
+
+    @Test
+    public void testGetLongestCommonString() {
+        System.out.println(facebook.getLongestCommonString("abcdcommon", "dco"));
+    }
+
+    @Test
+    public void testInsertInterval() {
+        List<Facebook.Interval> intervals = new ArrayList<>(Arrays.asList(
+                new Facebook.Interval(1, 2),
+                new Facebook.Interval(3, 5),
+                new Facebook.Interval(6, 8),
+                new Facebook.Interval(10, 12),
+                new Facebook.Interval(13, 15)
+        ));
+        System.out.println(facebook.insert(intervals, new Facebook.Interval(4, 7)));
     }
 }

@@ -14,6 +14,18 @@
             <version>6.9.4</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jlayer</groupId>
+            <artifactId>jlayer</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jl1.0.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.jaudiotagger</groupId>
+            <artifactId>jaudiotagger</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/jaudiotagger-2.2.6-SNAPSHOT.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <properties>

@@ -317,7 +317,7 @@ public class LeetCode {
 
     public int closestThreeSum(int[] nums, int target) {
         int result = 0;
-        int minDiff = Integer.MIN_VALUE;
+        int minDiff = Integer.MAX_VALUE;
         for (int i = 0; i < nums.length - 2; i++) {
             int targetLeft = target - nums[i];
             for (int start = i + 1, end = nums.length - 1; start < end;) {
