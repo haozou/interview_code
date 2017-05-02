@@ -13,6 +13,10 @@ public class MusicPlayerDriver {
             System.exit(1);
         }
         String inputPath = args[0];
+        run(inputPath);
+    }
+
+    public static void run(String inputPath) {
         MusicPlayerInterface musicPlayer = new MusicPlayer(inputPath);
         musicPlayer.loadMusics();
         Scanner scanner;
