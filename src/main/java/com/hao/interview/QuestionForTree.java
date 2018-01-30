@@ -1,7 +1,5 @@
 package com.hao.interview;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.util.*;
 
 /**
@@ -15,6 +13,7 @@ public class QuestionForTree {
         TreeNode parent;
         TreeNode next;
         public TreeNode(int val) {this.val = val;}
+
     }
 
     static class Helper {

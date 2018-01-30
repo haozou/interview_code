@@ -17,8 +17,8 @@ public class Consumer implements Runnable {
     public void run() {
         try {
             while (true) {
-                Thread.sleep(1000);
-                int data = this.broker.pop();
+                Thread.sleep(100);
+                Object data = this.broker.pop();
                 System.out.println("consumer " + name + " consumed " + data + ".");
 
             }

@@ -1,6 +1,5 @@
 package com.hao.interview;
 
-import java.net.Inet4Address;
 import java.util.*;
 
 /**
@@ -967,6 +966,9 @@ public class LeetCode {
     public List<List<Integer>> pathSum(TreeNode node, int sum) {
         List<List<Integer>> result = new ArrayList<>();
         pathSum(node, sum, new ArrayList<Integer>(), result);
+        for (List<Integer> d: result) {
+            d.add(0, 1);
+        }
         return result;
     }
 
@@ -983,5 +985,38 @@ public class LeetCode {
         pathSum(node.left, sum, oneResult, result);
         pathSum(node.right, sum, oneResult, result);
         oneResult.remove(oneResult.size() - 1);
+    }
+
+    public String longestPalindrome(String s) {
+        boolean[][] table = new boolean[s.length()][s.length()];
+        int maxLength = 1, start = 0;
+        for (int i = 0; i < s.length(); i++) {
+            table[i][i] = true;
+        }
+        for (int i = 0; i < s.length() - 1; i++) {
+            char f = s.charAt(i), e = s.charAt(i + 1);
+            if (f == e) {
+                table[i][i + 1] = true;
+                maxLength = 2;
+                start = i;
+            }
+
+        }
+        for (int k = 3; k < s.length(); k++) {
+            for ( int i = 0; i < s.length() - k + 1; i++) {
+                int j = i + k - 1;
+                char f = s.charAt(i), e = s.charAt(j);
+                if (table[i + 1][j - 1] && f == e) {
+                    table[i][j] = true;
+                    if (k > maxLength) {
+                        maxLength = k;
+                        start = i;
+                    }
+                }
+            }
+        }
+
+        return s.substring(start, start + maxLength);
+
     }
 }

@@ -1,8 +1,5 @@
 package com.hao.interview;
 
-import sun.awt.image.ImageWatched;
-
-import javax.sound.sampled.Line;
 import java.util.HashSet;
 
 /**

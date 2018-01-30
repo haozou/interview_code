@@ -1,12 +1,9 @@
 package com.hao.interview;
 
 import com.hao.interview.QuestionForTree.TreeNode;
-import com.hao.interview.QuestionForLinkedList.LinkedNode;
-import com.sun.org.apache.regexp.internal.RE;
-import javafx.collections.transformation.SortedList;
+import com.hao.interview.QuestionForLinkedList.*;
 import javafx.util.Pair;
 
-import java.net.Inet4Address;
 import java.util.*;
 
 /**
@@ -55,9 +52,8 @@ public class Facebook {
         }
         helper.prev = node;
         BinaryTreeToDLL(node.right, helper);
-        if (node.right == null) {
+        if (node.right == null)
             helper.tail = node;
-        }
     }
 
     public List<List<Integer>> subsets1(int[] nums) {
@@ -82,46 +78,83 @@ public class Facebook {
         return result;
     }
 
-    public void subsets2(int[] nums, int index, List<Integer> oneResult, List<List<Integer>> result) {
-        if (index > nums.length) return;
+    public void subsets2(int[] nums, int start, List<Integer> oneResult, List<List<Integer>> result) {
         result.add(new ArrayList<Integer>(oneResult));
-        for (int i = index; i < nums.length; i++) {
+        for (int i = start; i < nums.length; i++) {
             oneResult.add(nums[i]);
             subsets2(nums, i + 1, oneResult, result);
             oneResult.remove(oneResult.size() - 1);
         }
     }
 
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        subsetsWithDup(nums, 0, new ArrayList<Integer>(), result);
+        return result;
+    }
+
+    public void subsetsWithDup(int[] nums, int start, List<Integer> oneResult, List<List<Integer>> result) {
+        result.add(new ArrayList<Integer>(oneResult));
+        for (int i = start; i < nums.length; i++) {
+            if (i != start && nums[i] == nums[i - 1]) continue;
+
+            oneResult.add(nums[i]);
+            subsetsWithDup(nums, i + 1, oneResult, result);
+            oneResult.remove(oneResult.size() - 1);
+
+        }
+    }
+
     public void printLinkedListBackward(LinkedNode node) {
         LinkedNode cur = node;
-        int end = 0;
-        while (cur != null) {
+        while (cur.next != null) {
             cur = cur.next;
-            end++;
         }
-        printLinkedListBackward(node, 0, end - 1);
+        printLinkedListBackward(node, cur);
     }
+//
+//    public void printLinkedListBackward(LinkedNode node, int start, int end) {
+//        if (node == null) return;
+//        if (start > end) return;
+//        int mid = (start + end) / 2;
+//
+//        if (start == end) {
+//            LinkedNode midNode = getMidNode(node, mid);
+//            System.out.println(midNode.val);
+//            return;
+//        }
+//        printLinkedListBackward(node, mid + 1, end);
+//        printLinkedListBackward(node, start, mid);
+//    }
 
-    public void printLinkedListBackward(LinkedNode node, int start, int end) {
-        if (node == null) return;
-        if (start > end) return;
-        int mid = (start + end) / 2;
+//    public LinkedNode getMidNode(LinkedNode node, int mid) {
+//        if (node == null) return null;
+//        while (mid-- > 0) {
+//            node = node.next;
+//        }
+//        return node;
+//    }
 
+    public void printLinkedListBackward(LinkedNode start, LinkedNode end) {
+        LinkedNode mid = getMidNode(start, end);
         if (start == end) {
-            LinkedNode midNode = getMidNode(node, mid);
-            System.out.println(midNode.val);
+            System.out.println(mid.val);
             return;
         }
-        printLinkedListBackward(node, mid + 1, end);
-        printLinkedListBackward(node, start, mid);
+        printLinkedListBackward(mid.next, end);
+        printLinkedListBackward(start, mid);
+
     }
 
-    public LinkedNode getMidNode(LinkedNode node, int mid) {
-        if (node == null) return null;
-        while (mid-- > 0) {
-            node = node.next;
+    public LinkedNode getMidNode(LinkedNode start, LinkedNode end) {
+        LinkedNode chaser = start;
+        LinkedNode runner = start;
+        while (runner != end && runner.next != end) {
+            runner = runner.next.next;
+            chaser = chaser.next;
         }
-        return node;
+        return chaser;
     }
 
     public void merge(int[] nums1, int m, int[] nums2, int n) {
@@ -766,8 +799,134 @@ public class Facebook {
         return result;
     }
 
-    public boolean validNumer(String str) {
-        return str.matches("[\\+-]?((\\d+(\\.\\d*)?)|(\\.\\d+))([Ee][\\+-]?\\d+)?");
+    public boolean validNumber(String str) {
+        str = str.trim();
+        boolean flag = str.matches("[\\+-]?((\\d+(\\.\\d*)?)|(\\.\\d+))([Ee][\\+-]?\\d+)?");
+        boolean seenNumber = false, seenDot = false, seenE = false, seenNumberAfterE = true;
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c >= '0' && c < '9') {
+                seenNumber = true;
+                seenNumberAfterE = true;
+            } else if (c == '.') {
+                if (seenE || seenDot) return false;
+                seenDot = true;
+            } else if (c == 'e' || c == 'E') {
+                if (!seenNumber || seenE) return false;
+                seenNumberAfterE = false;
+                seenE = true;
+            } else if (c == '-' || c == '+') {
+                if (i != 0 && str.charAt(i - 1) != 'e' && str.charAt(i - 1) != 'E') return false;
+            } else {
+                return false;
+            }
+        }
+        return seenNumber && seenNumberAfterE;
     }
+
+    public int longestSubstring(String s, int k) {
+        return  longestSubstring(s, 0, s.length() - 1, k);
+    }
+
+    public int longestSubstring(String s, int start, int end, int k) {
+        if (end - start + 1 < k) return 0;
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = start; i <= end; i++) {
+            if (map.containsKey(s.charAt(i))) {
+                map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+            } else {
+                map.put(s.charAt(i), 1);
+            }
+        }
+
+        for (HashMap.Entry<Character, Integer> entry: map.entrySet()) {
+            if (entry.getValue() < k) {
+                for (int i = start; i <= end; i++) {
+                    if (entry.getKey().equals(s.charAt(i))) {
+                        int left = longestSubstring(s, start, i - 1, k);
+                        int right = longestSubstring(s, i, end, k);
+                        return Math.max(left, right);
+                    }
+                }
+            }
+        }
+        return end - start + 1;
+
+    }
+
+    public String reverseWords(String s) {
+        StringBuilder reversed = new StringBuilder();
+        String[] array = s.split(" ");
+        for(String str: array) {
+            if (str.trim().isEmpty()) continue;
+            reversed.insert(0, str);
+        }
+        return reversed.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

@@ -1,11 +1,9 @@
 package com.hao.interview;
 
+import com.hao.interview.QuestionForLinkedList.LinkedNode;
+import com.hao.interview.QuestionForTree.TreeNode;
 import com.hao.interview.imageProcess.ImageManipulator;
 import org.testng.annotations.Test;
-import org.testng.Assert.*;
-import com.hao.interview.QuestionForTree.TreeNode;
-import com.hao.interview.QuestionForLinkedList.LinkedNode;
-import sun.jvm.hotspot.utilities.Interval;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,6 +81,7 @@ public class FacebookTest {
     public void testSubsets() {
         System.out.println(facebook.subsets1(new int[]{1, 2, 3}));
         System.out.println(facebook.subsets2(new int[]{1, 2, 3}));
+        System.out.println(facebook.subsetsWithDup(new int[]{1,2,2}));
     }
 
     @Test
@@ -215,4 +214,10 @@ public class FacebookTest {
         ));
         System.out.println(facebook.insert(intervals, new Facebook.Interval(4, 7)));
     }
+
+    @Test
+    public void testLongestSubString() {
+        System.out.println(facebook.longestSubstring("ababbc", 2));
+    }
+
 }

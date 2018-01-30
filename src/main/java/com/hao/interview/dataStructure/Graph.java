@@ -1,4 +1,4 @@
-package com.hao.interview;
+package com.hao.interview.dataStructure;
 
 import java.util.*;
 
