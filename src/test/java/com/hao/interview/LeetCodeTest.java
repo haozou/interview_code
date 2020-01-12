@@ -1,16 +1,14 @@
 package com.hao.interview;
 
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 /**
  * Created by hzou on 8/31/16.

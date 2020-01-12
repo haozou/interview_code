@@ -38,15 +38,15 @@ public class GraphTest {
         System.out.println(g.topologicalSort2());
         System.out.println(g.getAllTopologicalSort());
 
-        printAllOrders(new ArrayList<String>(){{
-            add("abc");
-            add("bcc");
-            add("dcc");
-            add("defrhy");
-            add("gdd");
-            add("gdd");
-            add("gld");
-        }});
+        // printAllOrders(new ArrayList<String>(){{
+        //     add("abc");
+        //     add("bcc");
+        //     add("dcc");
+        //     add("defrhy");
+        //     add("gdd");
+        //     add("gdd");
+        //     add("gld");
+        // }});
     }
 
     public void printAllOrders(List<String> strings) {

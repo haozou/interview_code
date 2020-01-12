@@ -12,6 +12,7 @@ public class Graph2<V, W> {
         V from;
         V to;
         W weight;
+
         public Edge(V from, V to, W weight) {
             this.from = from;
             this.to = to;
@@ -30,35 +31,37 @@ public class Graph2<V, W> {
         this.adjList = new HashMap<>();
     }
 
-
     public void addVertex(final V from) {
         adjList.put(from, new ArrayList<Edge<V, W>>());
     }
-    public void addEdge(final V from, final V to,final W weight) {
-        if (adjList.containsKey(from)) {
-            adjList.get(from).add(new Edge(from, to, weight));
-        } else {
-            adjList.put(from, new ArrayList<Edge<V, W>>() {
-                {add(new Edge<>(from, to, weight));}
-            });
+
+    public void addEdge(final V from, final V to, final W weight) {
+        if (!adjList.containsKey(from)) {
+            adjList.put(from, new ArrayList<Edge<V, W>>());
         }
-        if (!adjList.containsKey(to))
+        adjList.get(from).add(new Edge<>(from, to, weight));
+        if (!adjList.containsKey(to)) {
             adjList.put(to, new ArrayList<Edge<V, W>>());
+        }
+
     }
 
     public void dfs() {
         Set<V> visited = new HashSet<>();
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (visited.contains(entry.getKey())) continue;
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (visited.contains(entry.getKey()))
+                continue;
             Stack<V> stack = new Stack<>();
             stack.add(entry.getKey());
             while (!stack.isEmpty()) {
                 V vertex = stack.pop();
-                if (visited.contains(vertex)) continue;
+                if (visited.contains(vertex))
+                    continue;
                 System.out.print(vertex + " ");
                 visited.add(vertex);
-                if (!adjList.containsKey(vertex)) continue;
-                for (Edge<V, W> edge: adjList.get(vertex)) {
+                if (!adjList.containsKey(vertex))
+                    continue;
+                for (Edge<V, W> edge : adjList.get(vertex)) {
                     stack.push(edge.to);
                 }
             }
@@ -68,17 +71,20 @@ public class Graph2<V, W> {
 
     public void bfs() {
         Set<V> visited = new HashSet<>();
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (visited.contains(entry.getKey())) continue;
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (visited.contains(entry.getKey()))
+                continue;
             Queue<V> queue = new LinkedList<>();
             queue.add(entry.getKey());
             while (!queue.isEmpty()) {
                 V vertex = queue.poll();
-                if (visited.contains(vertex)) continue;
+                if (visited.contains(vertex))
+                    continue;
                 System.out.print(vertex + " ");
                 visited.add(vertex);
-                if (!adjList.containsKey(vertex)) continue;
-                for (Edge<V, W> edge: adjList.get(vertex)) {
+                if (!adjList.containsKey(vertex))
+                    continue;
+                for (Edge<V, W> edge : adjList.get(vertex)) {
                     queue.add(edge.to);
                 }
             }
@@ -87,9 +93,10 @@ public class Graph2<V, W> {
     }
 
     public void findPaths(V from, V to, String curResult, List<String> result) {
-        if (!adjList.containsKey(from)) return;
-        for (Edge<V, W> edge: adjList.get(from)) {
-            String newCurResult = curResult +  " " + edge;
+        if (!adjList.containsKey(from))
+            return;
+        for (Edge<V, W> edge : adjList.get(from)) {
+            String newCurResult = curResult + " " + edge;
             if (edge.to.equals(to)) {
                 result.add(newCurResult);
             } else {
@@ -106,10 +113,11 @@ public class Graph2<V, W> {
         stack.push(new Pair<V, String>(from, curResult));
         while (!stack.isEmpty()) {
             Pair<V, String> node = stack.pop();
-            if (!adjList.containsKey(node.getKey())) continue;
+            if (!adjList.containsKey(node.getKey()))
+                continue;
 
-            for (Edge<V, W> edge: adjList.get(node.getKey())) {
-                String newCurResult  = node.getValue() + " " + edge;
+            for (Edge<V, W> edge : adjList.get(node.getKey())) {
+                String newCurResult = node.getValue() + " " + edge;
                 if (edge.to.equals(to)) {
                     result.add(newCurResult);
                 } else {
@@ -122,7 +130,8 @@ public class Graph2<V, W> {
 
     public void topologicalSort(V v, Set<V> visited, Stack<V> stack, Set<V> recStack) {
 
-        if (recStack.contains(v)) throw new RuntimeException("detect cycle");
+        if (recStack.contains(v))
+            throw new RuntimeException("detect cycle");
         if (visited.contains(v)) {
             return;
         }
@@ -139,18 +148,18 @@ public class Graph2<V, W> {
         stack.push(v);
     }
 
-
-
     public List<V> topologicalSort() {
         Set<V> visited = new HashSet<>();
         Set<V> recStack = new HashSet<>();
         Stack<V> stack = new Stack<>();
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (visited.contains(entry.getKey())) continue;
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (visited.contains(entry.getKey()))
+                continue;
             topologicalSort(entry.getKey(), visited, stack, recStack);
         }
         List<V> result = new ArrayList<>();
-        while (!stack.isEmpty()) result.add(stack.pop());
+        while (!stack.isEmpty())
+            result.add(stack.pop());
         return result;
     }
 
@@ -160,16 +169,20 @@ public class Graph2<V, W> {
         Map<V, Integer> indegree = new HashMap<>();
         int count = 0;
 
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (!indegree.containsKey(entry.getKey())) indegree.put(entry.getKey(), 0);
-            for (Edge<V, W> edge: entry.getValue()) {
-                if (indegree.containsKey(edge.to)) indegree.put(edge.to, indegree.get(edge.to) + 1);
-                else indegree.put(edge.to, 1);
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (!indegree.containsKey(entry.getKey()))
+                indegree.put(entry.getKey(), 0);
+            for (Edge<V, W> edge : entry.getValue()) {
+                if (indegree.containsKey(edge.to))
+                    indegree.put(edge.to, indegree.get(edge.to) + 1);
+                else
+                    indegree.put(edge.to, 1);
             }
         }
 
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (indegree.get(entry.getKey()) == 0) q.add(entry.getKey());
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (indegree.get(entry.getKey()) == 0)
+                q.add(entry.getKey());
         }
 
         while (!q.isEmpty()) {
@@ -179,26 +192,30 @@ public class Graph2<V, W> {
             if (adjList.containsKey(vertex)) {
                 for (Edge<V, W> edge : adjList.get(vertex)) {
                     indegree.put(edge.to, indegree.get(edge.to) - 1);
-                    if (indegree.get(edge.to) == 0) q.add(edge.to);
+                    if (indegree.get(edge.to) == 0)
+                        q.add(edge.to);
                 }
             }
             count++;
         }
-        if (count != indegree.size()) throw new RuntimeException("detect cycle");
+        if (count != indegree.size())
+            throw new RuntimeException("detect cycle");
 
         return result;
     }
-
 
     public List<List<V>> getAllTopologicalSort() {
         List<List<V>> result = new ArrayList<>();
         Map<V, Integer> indegree = new HashMap<>();
         Set<V> visited = new HashSet<>();
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
-            if (!indegree.containsKey(entry.getKey())) indegree.put(entry.getKey(), 0);
-            for (Edge<V, W> edge: entry.getValue()) {
-                if (indegree.containsKey(edge.to)) indegree.put(edge.to, indegree.get(edge.to) + 1);
-                else indegree.put(edge.to, 1);
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
+            if (!indegree.containsKey(entry.getKey()))
+                indegree.put(entry.getKey(), 0);
+            for (Edge<V, W> edge : entry.getValue()) {
+                if (indegree.containsKey(edge.to))
+                    indegree.put(edge.to, indegree.get(edge.to) + 1);
+                else
+                    indegree.put(edge.to, 1);
             }
         }
 
@@ -206,11 +223,12 @@ public class Graph2<V, W> {
         return result;
     }
 
-    public void getAllTopologicalSort(List<V> oneResult, List<List<V>> result, Set<V> visited, Map<V, Integer> indegree) {
+    public void getAllTopologicalSort(List<V> oneResult, List<List<V>> result, Set<V> visited,
+            Map<V, Integer> indegree) {
         boolean flag = false;
-        for (Map.Entry<V, List<Edge<V, W>>> entry: adjList.entrySet()) {
+        for (Map.Entry<V, List<Edge<V, W>>> entry : adjList.entrySet()) {
             if (indegree.get(entry.getKey()) == 0 && !visited.contains(entry.getKey())) {
-                for (Edge<V, W> edge: entry.getValue()) {
+                for (Edge<V, W> edge : entry.getValue()) {
                     indegree.put(edge.to, indegree.get(edge.to) - 1);
                 }
                 oneResult.add(entry.getKey());
@@ -219,12 +237,13 @@ public class Graph2<V, W> {
 
                 oneResult.remove(oneResult.size() - 1);
                 visited.remove(entry.getKey());
-                for (Edge<V, W> edge: entry.getValue()) {
+                for (Edge<V, W> edge : entry.getValue()) {
                     indegree.put(edge.to, indegree.get(edge.to) + 1);
                 }
                 flag = true;
             }
         }
-        if (!flag) result.add(new ArrayList<V>(oneResult));
+        if (!flag)
+            result.add(new ArrayList<V>(oneResult));
     }
 }
